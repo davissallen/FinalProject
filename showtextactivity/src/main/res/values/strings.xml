@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ShowTextActivity</string>
+    <string name="no_joke_found">No joke found :(</string>
+</resources>
