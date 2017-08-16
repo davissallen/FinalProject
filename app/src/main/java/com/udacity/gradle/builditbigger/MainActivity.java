@@ -1,12 +1,22 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+
+import java.io.IOException;
 
 import me.davisallen.jokes.JokeGenerator;
 import me.davisallen.showtextactivity.ShowTextActivity;
@@ -44,12 +54,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        // TODO: send off new AsyncTask to get joke from GCE server
+        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "Manfred"));
+
         JokeGenerator jokeGenerator = new JokeGenerator();
         String joke = jokeGenerator.generateJoke();
 
         Intent showTextActivityIntent = new Intent(this, ShowTextActivity.class);
         showTextActivityIntent.putExtra(Intent.EXTRA_TEXT, joke);
         startActivity(showTextActivityIntent);
+
     }
 
 }

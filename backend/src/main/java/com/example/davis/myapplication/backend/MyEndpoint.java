@@ -26,6 +26,7 @@ import me.davisallen.jokes.JokeGenerator;
                 packagePath = ""
         )
 )
+
 public class MyEndpoint {
 
     /**
