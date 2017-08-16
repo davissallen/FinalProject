@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
-
     defaultConfig {
         applicationId "com.udacity.gradle.builditbigger"
         minSdkVersion 16
@@ -18,10 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        free {
+            dependencies {
+                compile 'com.google.android.gms:play-services-ads:11.0.4'
+            }
+        }
+        paid {
+        }
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -29,22 +38,13 @@ dependencies {
 
     compile project(':jokes')
     compile project(':showtextactivity')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-
     compile project(path: ':backend', configuration: 'android-endpoints')
 
-    compile 'com.google.android.gms:play-services-ads:11.0.4'
+    compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-
-    // Google Play Services
     compile 'com.google.api-client:google-api-client-android:1.20.0'
-
     // For Functional Tests
     testCompile 'junit:junit:4.12'
-    // required if you want to use Mockito for unit tests
-    testCompile 'org.mockito:mockito-core:2.7.22'
-    // required if you want to use Mockito for Android tests
-    androidTestCompile 'org.mockito:mockito-android:2.7.22'
 }
