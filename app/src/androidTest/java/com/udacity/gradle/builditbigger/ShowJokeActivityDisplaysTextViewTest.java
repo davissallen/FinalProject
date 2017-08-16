@@ -40,20 +40,11 @@ public class ShowJokeActivityDisplaysTextViewTest {
     @Before
     public void registerIdlingResource() {
         mIdlingResource = mActivityTestRule.getActivity().getIdlingResource();
-        // To prove that the test fails, omit this call:
         Espresso.registerIdlingResources(mIdlingResource);
     }
 
     @Test
     public void showJokeActivityDisplaysNonEmptyStringTest() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.button_tell_joke), withText("Tell Joke"),
@@ -61,15 +52,6 @@ public class ShowJokeActivityDisplaysTextViewTest {
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
         appCompatButton.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-//        try {
-//            Thread.sleep(60000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.tv_show_joke),
