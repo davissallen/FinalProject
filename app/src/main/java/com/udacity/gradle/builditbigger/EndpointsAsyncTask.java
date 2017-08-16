@@ -13,12 +13,24 @@ import java.io.IOException;
 
 import me.davisallen.showtextactivity.ShowTextActivity;
 
-class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Void, String> {
     private static MyApi myApiService = null;
+
     private Context context;
+    private MyIdlingResource mIdlingResource;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        // The IdlingResource is null in production.
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
+    }
+
+    @Override
+    protected String doInBackground(MainActivity.EndpointsTaskParams... params) {
         if(myApiService == null) {
 
             MyApi.Builder builder = new MyApi.Builder(
@@ -30,7 +42,8 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
             myApiService = builder.build();
         }
 
-        context = params[0];
+        context = params[0].getContext();
+        mIdlingResource = params[0].getIdlingResource();
 
         try {
             return myApiService.getJoke().execute().getData();
@@ -44,5 +57,10 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
         Intent showTextActivityIntent = new Intent(context, ShowTextActivity.class);
         showTextActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
         context.startActivity(showTextActivityIntent);
+
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(true);
+        }
+
     }
 }

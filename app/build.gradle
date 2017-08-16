@@ -25,6 +25,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 
     compile project(':jokes')
     compile project(':showtextactivity')
@@ -39,4 +40,11 @@ dependencies {
 
     // Google Play Services
     compile 'com.google.api-client:google-api-client-android:1.20.0'
+
+    // For Functional Tests
+    testCompile 'junit:junit:4.12'
+    // required if you want to use Mockito for unit tests
+    testCompile 'org.mockito:mockito-core:2.7.22'
+    // required if you want to use Mockito for Android tests
+    androidTestCompile 'org.mockito:mockito-android:2.7.22'
 }
