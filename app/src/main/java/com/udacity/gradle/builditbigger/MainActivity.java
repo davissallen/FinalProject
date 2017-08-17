@@ -45,25 +45,36 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is run when the button is pressed.
+     *
+     * It will send of an AsyncTask that:
+     *      1. Gets a joke from endpoint server
+     *      2. Starts a new activity to show the joke
+     */
     public void tellJoke(View view) {
         EndpointsTaskParams params = new EndpointsTaskParams(this, mIdlingResource);
         // send off new AsyncTask to get joke from GCE server
         new EndpointsAsyncTask().execute(params);
     }
 
+    /**
+     * Custom object to hold params to send to EndpointsAsyncTask
+     */
     public class EndpointsTaskParams {
         private Context mContext;
         private MyIdlingResource mIdlingResource;
 
+        // constructor for param object
         public EndpointsTaskParams(Context context, @Nullable final MyIdlingResource idlingResource) {
             mContext = context;
             mIdlingResource = idlingResource;
         }
 
+        // getters for each param
         public Context getContext() {
             return mContext;
         }
-
         public MyIdlingResource getIdlingResource() {
             return mIdlingResource;
         }
