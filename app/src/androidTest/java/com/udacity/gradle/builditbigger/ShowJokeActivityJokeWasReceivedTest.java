@@ -24,16 +24,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.isEmptyString;
 
+@LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ShowJokeActivityTextViewExistsTest {
+public class ShowJokeActivityJokeWasReceivedTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void showJokeActivityTextViewExistsTest() {
+    public void showJokeActivityJokeWasReceivedTest() {
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.button_tell_joke), withText("Tell Joke"),
@@ -43,14 +43,14 @@ public class ShowJokeActivityTextViewExistsTest {
         appCompatButton.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.tv_show_joke),
+                allOf(withId(R.id.tv_show_joke), withText("Why did the dolphin raise his fin?\n\nTo live it up!!!"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(isDisplayed()));
+        textView.check(matches(withText("Why did the dolphin raise his fin?  To live it up!!!")));
 
     }
 
