@@ -11,6 +11,8 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
 import com.example.davis.myapplication.backend.myApi.MyApi;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
@@ -35,8 +37,19 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
                     new AndroidJsonFactory(), null
             );
 
-            String endpointRoorUrl = context.getResources().getString(R.string.endpiont_root_url);
-            builder.setRootUrl(endpointRoorUrl);
+
+            // To use the development App Server with an Emulator
+            builder.setRootUrl("http://10.0.2.2:8080/_ah/api/");
+            builder.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                @Override
+                public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                    abstractGoogleClientRequest.setDisableGZipContent(true);
+                }
+            });
+
+            // To use deployed App Server
+//            String endpointRootUrl = context.getResources().getString(R.string.endpiont_root_url);
+//            builder.setRootUrl(endpointRootUrl);
 
             myApiService = builder.build();
         }
