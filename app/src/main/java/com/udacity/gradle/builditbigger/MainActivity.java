@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.support.constraint.ConstraintLayout;
 import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ProgressBar mSpinner;
+    private ConstraintLayout mFragmentFrame;
 
     // The Idling Resource which will be null in production.
     @Nullable
@@ -21,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mSpinner = (ProgressBar) findViewById(R.id.spinner);
+        mFragmentFrame = (ConstraintLayout) findViewById(R.id.fragment_frame);
     }
 
     @Override
@@ -53,8 +61,11 @@ public class MainActivity extends AppCompatActivity {
      *      2. Starts a new activity to show the joke
      */
     public void tellJoke(View view) {
-        EndpointsTaskParams params = new EndpointsTaskParams(this, mIdlingResource);
+        // show the loading spinner icon
+        showProgressSpinner();
+
         // send off new AsyncTask to get joke from GCE server
+        EndpointsTaskParams params = new EndpointsTaskParams(this, mIdlingResource);
         new EndpointsAsyncTask().execute(params);
     }
 
@@ -78,6 +89,21 @@ public class MainActivity extends AppCompatActivity {
         public MyIdlingResource getIdlingResource() {
             return mIdlingResource;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideProgressSpinner();
+    }
+
+    private void showProgressSpinner() {
+        mSpinner.setVisibility(View.VISIBLE);
+        mFragmentFrame.setVisibility(View.GONE);
+    }
+    private void hideProgressSpinner() {
+        mSpinner.setVisibility(View.GONE);
+        mFragmentFrame.setVisibility(View.VISIBLE);
     }
 
     /**

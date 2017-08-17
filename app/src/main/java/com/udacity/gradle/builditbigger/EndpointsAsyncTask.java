@@ -3,6 +3,9 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -20,16 +23,6 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
     private MyIdlingResource mIdlingResource;
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        // The IdlingResource is null in production.
-        if (mIdlingResource != null) {
-            mIdlingResource.setIdleState(false);
-        }
-    }
-
-    @Override
     protected String doInBackground(MainActivity.EndpointsTaskParams... params) {
         if(myApiService == null) {
 
@@ -42,8 +35,14 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
             myApiService = builder.build();
         }
 
+        // Get params from custom param object
         context = params[0].getContext();
         mIdlingResource = params[0].getIdlingResource();
+
+        // The IdlingResource is null in production.
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
 
         try {
             return myApiService.getJoke().execute().getData();
@@ -58,9 +57,9 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
         showTextActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
         context.startActivity(showTextActivityIntent);
 
+        // let the IdlingResource know it's done
         if (mIdlingResource != null) {
             mIdlingResource.setIdleState(true);
         }
-
     }
 }
