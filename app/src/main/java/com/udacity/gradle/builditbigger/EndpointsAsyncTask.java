@@ -37,19 +37,27 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
                     new AndroidJsonFactory(), null
             );
 
+            // Option to use local app server or deployed instance
+            // Edit the value "shouldUseLocalAppServer" in bools.xml to change configuration
+            Boolean shouldUseLocalAppServer = context.getResources().getBoolean(R.bool.shouldUseLocalAppServer);
+            if (shouldUseLocalAppServer) {
 
-            // To use the development App Server with an Emulator
-            builder.setRootUrl("http://10.0.2.2:8080/_ah/api/");
-            builder.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                @Override
-                public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                    abstractGoogleClientRequest.setDisableGZipContent(true);
-                }
-            });
+                // To use the development App Server with an Emulator
+                builder.setRootUrl("http://10.0.2.2:8080/_ah/api/");
+                builder.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                    }
+                });
 
-            // To use deployed App Server
-//            String endpointRootUrl = context.getResources().getString(R.string.endpiont_root_url);
-//            builder.setRootUrl(endpointRootUrl);
+            } else {
+
+                // To use deployed App Server with any device or emulator
+                String endpointRootUrl = context.getResources().getString(R.string.endpiont_root_url);
+                builder.setRootUrl(endpointRootUrl);
+
+            }
 
             myApiService = builder.build();
         }
