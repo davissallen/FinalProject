@@ -25,7 +25,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ShowJokeActivityTextViewExistsTest {
 
@@ -34,11 +33,6 @@ public class ShowJokeActivityTextViewExistsTest {
 
     @Test
     public void showJokeActivityTextViewExistsTest() {
-//        try {
-//            Thread.sleep(60000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.button_tell_joke), withText("Tell Joke"),
