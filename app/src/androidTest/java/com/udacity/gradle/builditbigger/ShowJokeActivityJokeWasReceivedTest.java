@@ -50,7 +50,7 @@ public class ShowJokeActivityJokeWasReceivedTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Why did the dolphin raise his fin?  To live it up!!!")));
+        textView.check(matches(withText("Why did the dolphin raise his fin?\n\nTo live it up!!!")));
 
     }
 

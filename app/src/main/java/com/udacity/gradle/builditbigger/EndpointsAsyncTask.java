@@ -24,20 +24,22 @@ class EndpointsAsyncTask extends AsyncTask<MainActivity.EndpointsTaskParams, Voi
 
     @Override
     protected String doInBackground(MainActivity.EndpointsTaskParams... params) {
+        // Get params from custom param object
+        context = params[0].getContext();
+        mIdlingResource = params[0].getIdlingResource();
+
         if(myApiService == null) {
 
             MyApi.Builder builder = new MyApi.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null
             );
-            builder.setRootUrl("https://1-dot-joke-endpoint.appspot.com/_ah/api/");
+
+            String endpointRoorUrl = context.getResources().getString(R.string.endpiont_root_url);
+            builder.setRootUrl(endpointRoorUrl);
 
             myApiService = builder.build();
         }
-
-        // Get params from custom param object
-        context = params[0].getContext();
-        mIdlingResource = params[0].getIdlingResource();
 
         // The IdlingResource is null in production.
         if (mIdlingResource != null) {
